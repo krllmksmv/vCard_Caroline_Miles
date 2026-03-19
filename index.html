@@ -1,156 +1,290 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Digital Contact Card</title>
+  <title>Caroline Miles</title>
   <style>
     :root {
-      --bg: #f4f6f8;
-      --card: #ffffff;
-      --text: #1f2937;
-      --muted: #6b7280;
-      --line: #e5e7eb;
-      --accent: #0f172a;
-      --accent-2: #111827;
-      --shadow: 0 14px 40px rgba(15, 23, 42, 0.08);
-      --radius: 22px;
+      --blue: #6b8fe9;
+      --page: #efefef;
+      --card: #f6f6f7;
+      --muted: #8f929b;
+      --line: #d9dbe2;
+      --text: #111111;
+      --white: #ffffff;
+      --shadow: 0 8px 22px rgba(16, 24, 40, 0.06);
+      --radius-card: 20px;
+      --radius-icon: 12px;
+      --radius-pill: 999px;
+
+      --hero-edge-gap: 42px;
+      --hero-name-gap-top: 30px;
+      --hero-button-gap-top: 28px;
+
+      --content-gap-top: var(--hero-edge-gap);
+      --page-side: 26px;
+      --frame-max: 860px;
+
+      --avatar-size: 320px;
+      --avatar-border: 10px;
+      --name-size: 70px;
+      --name-line: 1.03;
+      --button-width: 630px;
+      --button-height: 118px;
+      --button-font: 31px;
+      --button-icon: 52px;
+
+      --panel-header-h: 142px;
+      --panel-title: 54px;
+      --panel-icon: 96px;
+      --chevron-size: 40px;
+
+      --label-size: 25px;
+      --value-size: 32px;
+      --row-gap: 20px;
     }
 
     * { box-sizing: border-box; }
+    html, body { min-height: 100%; }
 
     body {
       margin: 0;
       font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background:
-        radial-gradient(circle at top, rgba(255,255,255,0.95), rgba(244,246,248,0.92) 35%, rgba(240,243,247,1) 100%);
       color: var(--text);
+      background: var(--page);
+      overflow-y: auto;
+      overflow-x: hidden;
     }
 
     .page {
       min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      padding: 24px 16px 40px;
-    }
-
-    .phone {
-      width: 100%;
-      max-width: 430px;
+      background: var(--page);
     }
 
     .hero {
-      background: linear-gradient(180deg, #ffffff 0%, #f7f8fa 100%);
-      border-radius: 32px;
-      overflow: hidden;
-      box-shadow: var(--shadow);
-      border: 1px solid rgba(255,255,255,0.9);
+      background: var(--blue);
+      padding:
+        var(--hero-edge-gap)
+        var(--page-side)
+        var(--hero-edge-gap);
     }
 
-    .hero__image {
-      display: block;
-      width: 100%;
-      aspect-ratio: 1 / 1;
-      object-fit: cover;
-      background: #dfe6ee;
+    .hero-inner,
+    .content-inner {
+      width: min(calc(100vw - (var(--page-side) * 2)), var(--frame-max));
+      margin: 0 auto;
     }
 
-    .hero__content {
-      padding: 22px 22px 24px;
+    .hero-inner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
       text-align: center;
     }
 
-    h1 {
-      margin: 0 0 14px;
-      font-size: 1.8rem;
-      line-height: 1.15;
-      letter-spacing: -0.03em;
+    .avatar-wrap {
+      width: var(--avatar-size);
+      height: var(--avatar-size);
+      border-radius: 50%;
+      border: var(--avatar-border) solid rgba(255,255,255,0.98);
+      overflow: hidden;
+      background: #dbe3f5;
+      box-shadow: 0 4px 18px rgba(0,0,0,0.06);
+      flex: 0 0 auto;
     }
 
-    .subtitle {
-      margin: -4px 0 18px;
-      color: var(--muted);
-      font-size: 0.98rem;
+    .avatar {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
     }
 
-    .btn {
+    .name {
+      margin: var(--hero-name-gap-top) 0 0;
+      color: var(--white);
+      font-size: var(--name-size);
+      line-height: var(--name-line);
+      font-weight: 700;
+      letter-spacing: -0.045em;
+    }
+
+    .add-btn {
+      margin-top: var(--hero-button-gap-top);
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 10px;
-      width: 100%;
-      min-height: 52px;
+      gap: 18px;
+      width: min(100%, var(--button-width));
+      min-height: var(--button-height);
+      padding: 20px 34px;
       border: 0;
-      border-radius: 999px;
-      background: var(--accent);
-      color: #fff;
+      border-radius: var(--radius-pill);
+      background: rgba(255,255,255,0.94);
+      color: var(--text);
       text-decoration: none;
-      font-weight: 600;
-      font-size: 1rem;
-      transition: transform 0.18s ease, opacity 0.18s ease;
-      box-shadow: 0 10px 24px rgba(15, 23, 42, 0.18);
+      font-size: var(--button-font);
+      line-height: 1;
+      font-weight: 400;
+      box-shadow: 0 8px 20px rgba(20, 20, 20, 0.04);
+      cursor: pointer;
     }
 
-    .btn:hover { transform: translateY(-1px); }
-    .btn:active { transform: translateY(0); }
+    .plus-icon {
+      width: var(--button-icon);
+      height: var(--button-icon);
+      flex: 0 0 var(--button-icon);
+    }
 
-    .sections {
-      margin-top: 16px;
+    .content {
+      padding: var(--content-gap-top) var(--page-side) 48px;
+    }
+
+    .accordion {
       display: grid;
-      gap: 14px;
+      gap: 28px;
     }
 
-    .card {
+    .panel {
       background: var(--card);
-      border-radius: var(--radius);
-      padding: 18px;
+      border-radius: var(--radius-card);
       box-shadow: var(--shadow);
-      border: 1px solid rgba(15, 23, 42, 0.05);
+      overflow: hidden;
     }
 
-    .card__title {
-      margin: 0 0 14px;
-      font-size: 1rem;
-      font-weight: 700;
-      color: var(--accent-2);
-    }
-
-    .item {
+    .panel-toggle {
+      width: 100%;
+      min-height: var(--panel-header-h);
       display: flex;
-      gap: 12px;
-      align-items: flex-start;
-      padding: 12px 0;
-      border-top: 1px solid var(--line);
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 20px 24px;
+      border: 0;
+      background: transparent;
+      cursor: pointer;
+      text-align: left;
+      color: inherit;
+      list-style: none;
     }
 
-    .item:first-of-type { border-top: 0; padding-top: 0; }
-    .item:last-of-type { padding-bottom: 0; }
+    summary::-webkit-details-marker { display: none; }
 
-    .icon {
-      width: 40px;
-      height: 40px;
-      flex: 0 0 40px;
-      border-radius: 12px;
+    .panel-header-left {
+      display: flex;
+      align-items: center;
+      gap: 22px;
+      min-width: 0;
+    }
+
+    .section-title {
+      margin: 0;
+      font-size: var(--panel-title);
+      line-height: 1.05;
+      font-weight: 400;
+      letter-spacing: -0.03em;
+    }
+
+    .icon-box {
+      width: var(--panel-icon);
+      height: var(--panel-icon);
+      flex: 0 0 var(--panel-icon);
+      border-radius: var(--radius-icon);
+      background: #ededee;
       display: grid;
       place-items: center;
-      background: #f3f4f6;
-      color: #111827;
-      font-size: 1.05rem;
+      color: var(--muted);
+    }
+
+    .icon-box svg,
+    .chevron {
+      width: 44px;
+      height: 44px;
+      stroke: currentColor;
+      stroke-width: 1.8;
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .chevron-wrap {
+      color: var(--muted);
+      transition: transform 0.22s ease;
+      flex: 0 0 auto;
+    }
+
+    .panel[open] .chevron-wrap {
+      transform: rotate(90deg);
+    }
+
+    .panel-body {
+      display: grid;
+      grid-template-rows: 0fr;
+      transition: grid-template-rows 0.25s ease;
+    }
+
+    .panel[open] .panel-body {
+      grid-template-rows: 1fr;
+    }
+
+    .panel-body-inner {
+      overflow: hidden;
+    }
+
+    .divider {
+      margin: 0 24px;
+      height: 1px;
+      background: var(--line);
+    }
+
+    .list {
+      padding: 8px 0;
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: 118px minmax(0, 1fr);
+      gap: var(--row-gap);
+      padding: 28px 34px;
+      align-items: start;
+      position: relative;
+    }
+
+    .row + .row::before {
+      content: "";
+      position: absolute;
+      left: 34px;
+      right: 34px;
+      top: 0;
+      height: 1px;
+      background: var(--line);
+    }
+
+    .row .icon-box {
+      width: 82px;
+      height: 82px;
+      margin-top: 2px;
+    }
+
+    .row .icon-box svg {
+      width: 38px;
+      height: 38px;
     }
 
     .label {
-      margin: 0 0 4px;
-      font-size: 0.78rem;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: var(--muted);
+      margin: 0 0 10px;
+      font-size: var(--label-size);
+      line-height: 1.2;
+      font-weight: 400;
     }
 
     .value {
       margin: 0;
-      font-size: 0.98rem;
-      line-height: 1.45;
-      color: var(--text);
+      font-size: var(--value-size);
+      line-height: 1.22;
+      font-weight: 400;
+      word-break: break-word;
     }
 
     .value a {
@@ -158,99 +292,242 @@
       text-decoration: none;
     }
 
-    .footer-note {
-      margin-top: 16px;
-      text-align: center;
-      color: var(--muted);
-      font-size: 0.9rem;
+    @media (max-width: 900px) {
+      :root {
+        --frame-max: 760px;
+      }
     }
 
-    @media (min-width: 700px) {
-      .page { padding-top: 40px; }
-      .hero__content { padding: 28px 28px 30px; }
-      .card { padding: 22px; }
+    @media (max-width: 720px) {
+      :root {
+        --page-side: 18px;
+        --hero-edge-gap: 34px;
+        --content-gap-top: 34px;
+        --avatar-size: 284px;
+        --avatar-border: 9px;
+        --name-size: 60px;
+        --button-width: 620px;
+        --button-height: 108px;
+        --button-font: 29px;
+        --button-icon: 48px;
+        --panel-header-h: 128px;
+        --panel-title: 42px;
+        --panel-icon: 92px;
+        --label-size: 22px;
+        --value-size: 28px;
+      }
+    }
+
+    @media (max-width: 540px) {
+      :root {
+        --page-side: 18px;
+        --hero-edge-gap: 32px;
+        --content-gap-top: 32px;
+        --avatar-size: 186px;
+        --avatar-border: 7px;
+        --hero-name-gap-top: 22px;
+        --hero-button-gap-top: 24px;
+        --name-size: 42px;
+        --button-width: 100%;
+        --button-height: 78px;
+        --button-font: 25px;
+        --button-icon: 38px;
+        --panel-header-h: 92px;
+        --panel-title: 34px;
+        --panel-icon: 68px;
+        --label-size: 18px;
+        --value-size: 19px;
+        --row-gap: 14px;
+      }
+
+      .panel-toggle {
+        padding: 12px 18px;
+      }
+
+      .panel-header-left {
+        gap: 16px;
+      }
+
+      .icon-box svg,
+      .chevron {
+        width: 30px;
+        height: 30px;
+      }
+
+      .row {
+        grid-template-columns: 82px minmax(0, 1fr);
+        padding: 20px 18px;
+      }
+
+      .row + .row::before {
+        left: 18px;
+        right: 18px;
+      }
+
+      .row .icon-box {
+        width: 58px;
+        height: 58px;
+      }
+
+      .row .icon-box svg {
+        width: 28px;
+        height: 28px;
+      }
+
+      .divider {
+        margin: 0 18px;
+      }
     }
   </style>
 </head>
 <body>
   <main class="page">
-    <div class="phone">
-      <section class="hero">
-        <img
-          class="hero__image"
-          src="https://static.myqrcode.mobi/user-media-prod/2026-03-18-16.48.21_3dad02c4_xq3r3v"
-          alt="Profile photo"
-        />
-        <div class="hero__content">
-          <h1>Caroline Miles</h1>
-          <p class="subtitle">Digital contact card</p>
-          <a class="btn" href="#contact">
-            <span>＋</span>
-            <span>Add contact</span>
-          </a>
+    <section class="hero">
+      <div class="hero-inner">
+        <div class="avatar-wrap">
+          <img class="avatar" src="https://raw.githubusercontent.com/krllmksmv/vCard_Caroline_Miles/refs/heads/main/photo.jpg" alt="Caroline Miles" />
         </div>
-      </section>
-
-      <div class="sections">
-        <section class="card" id="contact">
-          <h2 class="card__title">Contact</h2>
-
-          <div class="item">
-            <div class="icon">✉️</div>
-            <div>
-              <p class="label">Email</p>
-              <p class="value"><a href="mailto:caroline@example.com">caroline@example.com</a></p>
-            </div>
-          </div>
-
-          <div class="item">
-            <div class="icon">📞</div>
-            <div>
-              <p class="label">Phone</p>
-              <p class="value"><a href="tel:+10000000000">+1 (000) 000-0000</a></p>
-            </div>
-          </div>
-
-          <div class="item">
-            <div class="icon">🌐</div>
-            <div>
-              <p class="label">Website</p>
-              <p class="value"><a href="#">example.com</a></p>
-            </div>
-          </div>
-        </section>
-
-        <section class="card">
-          <h2 class="card__title">Company</h2>
-
-          <div class="item">
-            <div class="icon">🏢</div>
-            <div>
-              <p class="label">Company</p>
-              <p class="value">Company name</p>
-            </div>
-          </div>
-
-          <div class="item">
-            <div class="icon">💼</div>
-            <div>
-              <p class="label">Position</p>
-              <p class="value">Business Development Manager</p>
-            </div>
-          </div>
-
-          <div class="item">
-            <div class="icon">📍</div>
-            <div>
-              <p class="label">Location</p>
-              <p class="value">New York, USA</p>
-            </div>
-          </div>
-        </section>
+        <h1 class="name">Caroline Miles</h1>
+        <a
+          class="add-btn"
+          href="https://raw.githubusercontent.com/krllmksmv/vCard_Caroline_Miles/refs/heads/main/contact.vcf"
+        >
+          <svg class="plus-icon" viewBox="0 0 32 32" aria-hidden="true">
+            <circle cx="16" cy="16" r="14.5" fill="none" stroke="currentColor" stroke-width="2.5"></circle>
+            <path d="M16 9v14M9 16h14" stroke="currentColor" stroke-width="2.7" stroke-linecap="round"></path>
+          </svg>
+          <span>Add contact</span>
+        </a>
       </div>
+    </section>
 
-      <p class="footer-note">Single-file demo page in <code>index.html</code></p>
-    </div>
+    <section class="content">
+      <div class="content-inner">
+        <div class="accordion">
+          <details class="panel" name="info-panels">
+            <summary class="panel-toggle">
+              <div class="panel-header-left">
+                <div class="icon-box" aria-hidden="true">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M5 4.8c0-.44.36-.8.8-.8h2.08c.38 0 .71.27.78.64l.56 3.04c.05.26-.04.53-.24.71L7.5 9.9a13.13 13.13 0 0 0 6.6 6.6l1.53-1.48c.18-.2.45-.29.71-.24l3.04.56c.37.07.64.4.64.78v2.08c0 .44-.36.8-.8.8h-1.2C10.84 20 4 13.16 4 5.99V4.8h1Z"></path>
+                  </svg>
+                </div>
+                <h2 class="section-title">Contact</h2>
+              </div>
+              <div class="chevron-wrap" aria-hidden="true">
+                <svg class="chevron" viewBox="0 0 24 24">
+                  <path d="M9 6l6 6-6 6"></path>
+                </svg>
+              </div>
+            </summary>
+
+            <div class="panel-body">
+              <div class="panel-body-inner">
+                <div class="divider"></div>
+                <div class="list">
+                  <div class="row">
+                    <div class="icon-box" aria-hidden="true">
+                      <svg viewBox="0 0 24 24">
+                        <path d="M5 4.8c0-.44.36-.8.8-.8h2.08c.38 0 .71.27.78.64l.56 3.04c.05.26-.04.53-.24.71L7.5 9.9a13.13 13.13 0 0 0 6.6 6.6l1.53-1.48c.18-.2.45-.29.71-.24l3.04.56c.37.07.64.4.64.78v2.08c0 .44-.36.8-.8.8h-1.2C10.84 20 4 13.16 4 5.99V4.8h1Z"></path>
+                      </svg>
+                    </div>
+                    <div>
+                      <p class="label">Phone:</p>
+                      <p class="value"><a href="tel:+41788128681">+41788128681</a></p>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="icon-box" aria-hidden="true">
+                      <svg viewBox="0 0 24 24">
+                        <rect x="3.5" y="5.5" width="17" height="13" rx="2"></rect>
+                        <path d="M4.5 7l7.5 6 7.5-6"></path>
+                      </svg>
+                    </div>
+                    <div>
+                      <p class="label">Email:</p>
+                      <p class="value"><a href="mailto:caroline.miles@ari-cosmetics.com">caroline.miles@ari-cosmetics.com</a></p>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="icon-box" aria-hidden="true">
+                      <svg viewBox="0 0 24 24">
+                        <path d="M10.5 13.5l3-3"></path>
+                        <path d="M8.2 15.8l-1.35 1.35a3.4 3.4 0 1 1-4.8-4.8L5.7 8.7a3.4 3.4 0 0 1 4.8 4.8l-.85.85"></path>
+                        <path d="M15.8 8.2l1.35-1.35a3.4 3.4 0 1 1 4.8 4.8L18.3 15.3a3.4 3.4 0 0 1-4.8-4.8l.85-.85"></path>
+                      </svg>
+                    </div>
+                    <div>
+                      <p class="label">Website:</p>
+                      <p class="value"><a href="https://www.ari-cosmetics.com" target="_blank" rel="noopener">www.ari-cosmetics.com</a></p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </details>
+
+          <details class="panel" name="info-panels">
+            <summary class="panel-toggle">
+              <div class="panel-header-left">
+                <div class="icon-box" aria-hidden="true">
+                  <svg viewBox="0 0 24 24">
+                    <rect x="4" y="7" width="16" height="11" rx="2"></rect>
+                    <path d="M9 7V5.5A1.5 1.5 0 0 1 10.5 4h3A1.5 1.5 0 0 1 15 5.5V7"></path>
+                    <path d="M4 11.5h16"></path>
+                  </svg>
+                </div>
+                <h2 class="section-title">Company</h2>
+              </div>
+              <div class="chevron-wrap" aria-hidden="true">
+                <svg class="chevron" viewBox="0 0 24 24">
+                  <path d="M9 6l6 6-6 6"></path>
+                </svg>
+              </div>
+            </summary>
+
+            <div class="panel-body">
+              <div class="panel-body-inner">
+                <div class="divider"></div>
+                <div class="list">
+                  <div class="row">
+                    <div class="icon-box" aria-hidden="true">
+                      <svg viewBox="0 0 24 24">
+                        <path d="M4 20h16"></path>
+                        <path d="M7 20V8h10v12"></path>
+                        <path d="M10 8V5h4v3"></path>
+                        <path d="M9.5 11h.01"></path>
+                        <path d="M14.5 11h.01"></path>
+                        <path d="M9.5 14h.01"></path>
+                        <path d="M14.5 14h.01"></path>
+                      </svg>
+                    </div>
+                    <div>
+                      <p class="label">Company:</p>
+                      <p class="value">ARI Cosmetics</p>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="icon-box" aria-hidden="true">
+                      <svg viewBox="0 0 24 24">
+                        <circle cx="12" cy="8" r="3.2"></circle>
+                        <path d="M5.5 19.2a6.5 6.5 0 0 1 13 0"></path>
+                      </svg>
+                    </div>
+                    <div>
+                      <p class="label">Title:</p>
+                      <p class="value">Head of Marketing</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
   </main>
 </body>
 </html>
